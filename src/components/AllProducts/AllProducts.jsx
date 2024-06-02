@@ -1,43 +1,42 @@
-import React, { useEffect, useState } from "react";
-import login from "../../assets/login.jpg";
-import axios from "axios";
-import { MdOutlineSearch } from "react-icons/md";
-import { Link } from "react-router-dom";
-import AllProductsShim from "../AllProductsShim/AllProductsShim";
+import React, { useEffect, useState } from "react"; // Line 1
+import login from "../../assets/login.jpg"; // Line 2
+import axios from "axios"; // Line 3
+import { MdOutlineSearch } from "react-icons/md"; // Line 4
+import { Link } from "react-router-dom"; // Line 5
+import AllProductsShim from "../AllProductsShim/AllProductsShim"; // Line 6
 
 const AllProducts = ({ AddToCart }) => {
-  const [allProducts, setAllProducts] = useState([]);
-  const [allcategory, setAllcategory] = useState([]);
-  const [originalProducts, setOriginalProducts] = useState([]);
-  const [searchItem, setSearchItem] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [allProducts, setAllProducts] = useState([]); // Line 9
+  const [allCategory, setAllCategory] = useState([]); // Line 10 (Corrected variable name to camelCase)
+  const [originalProducts, setOriginalProducts] = useState([]); // Line 11
+  const [searchItem, setSearchItem] = useState(""); // Line 12
+  const [minPrice, setMinPrice] = useState(""); // Line 13
+  const [maxPrice, setMaxPrice] = useState(""); // Line 14
 
   useEffect(() => {
-    //All Products
-    const AllProducts = async () => {
+    // All Products
+    const fetchAllProducts = async () => { // Line 17 (Renamed function to avoid conflict with state name)
       const res = await axios("https://dummyjson.com/products");
-      // console.log(res.data.products);
       setAllProducts(res.data.products);
       setOriginalProducts(res.data.products);
     };
-    AllProducts();
-  }, []);
+    fetchAllProducts(); // Line 22 (Updated function call)
+  }, []); // Line 23
 
-  //Products Category
+  // Products Category
   useEffect(() => {
-    const getAllProductsCategory = async () => {
+    const fetchAllCategories = async () => { // Line 26 (Renamed function to be more descriptive)
       try {
         const res = await axios("https://dummyjson.com/products/categories");
-        setAllcategory(res.data);
+        setAllCategory(res.data); // Line 29 (Corrected variable name to camelCase)
       } catch (error) {
         console.log(error);
       }
     };
-    getAllProductsCategory();
-  }, []);
+    fetchAllCategories(); // Line 33 (Updated function call)
+  }, []); // Line 34
 
-  const filterProducts = (selectCategory) => {
+  const filterProducts = (selectCategory) => { // Line 36
     const data = selectCategory
       ? originalProducts.filter(
           (filterItem) => filterItem.category === selectCategory
@@ -46,14 +45,14 @@ const AllProducts = ({ AddToCart }) => {
     setAllProducts(data);
   };
 
-  const handleSearchItem = () => {
+  const handleSearchItem = () => { // Line 44
     const searchProduct = originalProducts.filter((item) =>
       item.title.toLowerCase().includes(searchItem.toLowerCase())
     );
     setAllProducts(searchProduct);
   };
 
-  const handlePrice = () => {
+  const handlePrice = () => { // Line 51
     let min = parseFloat(minPrice);
     let max = parseFloat(maxPrice);
 
@@ -67,7 +66,7 @@ const AllProducts = ({ AddToCart }) => {
     <>
       <div>
         {/* Poster Image */}
-        <div className="relative">
+        <div className="relative"> // Line 66
           <img
             src={login}
             alt=""
@@ -79,17 +78,17 @@ const AllProducts = ({ AddToCart }) => {
           </h2>
         </div>
 
-        <div className="bg-gray-100 py-4">
+        <div className="bg-gray-100 py-4"> // Line 75
           {/* Products Category and search Bar */}
           <div className="flex flex-col md:flex-row items-center justify-center mt-8 md:mt-0">
             {/* Products category select drop menu */}
-            <div className="relative mb-4 md:mb-0">
+            <div className="relative mb-4 md:mb-0"> // Line 79
               <select
                 className="bg-white border-2 border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-indigo-500"
                 onChange={(e) => filterProducts(e.target.value)}
               >
                 <option className="text-gray-400">Filter By Category</option>
-                {allcategory.slice(0, 6).map((item, index) => (
+                {allCategory.slice(0, 6).map((item, index) => ( // Line 85 (Corrected variable name to camelCase)
                   <option value={item} key={index} className="text-gray-800">
                     {item}
                   </option>
@@ -161,7 +160,7 @@ const AllProducts = ({ AddToCart }) => {
           <AllProductsShim />
         ) : (
           <div className="flex gap-4 justify-center flex-wrap">
-            {allProducts.map((AllItems) => (
+            {allProducts.map((AllItems) => ( // Line 146
               <div
                 className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
                 key={AllItems.id}
@@ -230,4 +229,4 @@ const AllProducts = ({ AddToCart }) => {
   );
 };
 
-export default AllProducts;
+export default AllProducts; // Line 208
