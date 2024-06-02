@@ -82,7 +82,7 @@ const AllProducts = ({ AddToCart }) => {
           {/* Products Category and search Bar */}
           <div className="flex flex-col md:flex-row items-center justify-center mt-8 md:mt-0">
             {/* Products category select drop menu */}
-            <div className="relative mb-4 md:mb-0"> // Line 79
+            <div className="relative mb-4 md:mb-0">
               <select
                 className="bg-white border-2 border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-indigo-500"
                 onChange={(e) => filterProducts(e.target.value)}
